@@ -1,0 +1,30 @@
+bundle:
+  name: dab_demo_git_actions
+
+include:
+  - resources/*.yml
+  - resources/jobs/*.yml
+
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7405612171057217.17.azuredatabricks.net
+    variables:
+      catalog: dea_project
+      schema: dev
+    presets:
+      artifacts_dynamic_version: true
+      name_prefix: (dev_${workspace.current_user.short_name}_)
+
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-7405612171057217.17.azuredatabricks.net
+      root_path: /${bundle.name}/
+    variables:
+      catalog: dea_project
+      schema: prod

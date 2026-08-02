@@ -1,0 +1,212 @@
+{
+  "datasets": [
+    {
+      "name": "f59296f0",
+      "displayName": "Events per minute",
+      "queryLines": [
+        "SELECT window_start_timestamp, SUM(event_count) as total_edits\r\n",
+        "FROM spark_kafka_projects.wikidata.dashboard_aggregations\r\n",
+        "GROUP BY window_start_timestamp ORDER BY window_start_timestamp DESC"
+      ]
+    },
+    {
+      "name": "53afaede",
+      "displayName": "Events per Domain",
+      "queryLines": [
+        "SELECT wiki, SUM(event_count) as total_edits\r\n",
+        "FROM spark_kafka_projects.wikidata.dashboard_aggregations\r\n",
+        "GROUP BY wiki ORDER BY total_edits DESC LIMIT 10"
+      ]
+    },
+    {
+      "name": "115108a4",
+      "displayName": "Bot vs human",
+      "queryLines": [
+        "SELECT is_bot, SUM(event_count) as total\r\n",
+        "FROM spark_kafka_projects.wikidata.dashboard_aggregations\r\n",
+        "GROUP BY is_bot"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "e8c36ae9",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "events_over_time",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "f59296f0",
+                  "fields": [
+                    {
+                      "name": "window_start_timestamp",
+                      "expression": "`window_start_timestamp`"
+                    },
+                    {
+                      "name": "total_edits",
+                      "expression": "`total_edits`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Events Over Time",
+                "showTitle": true
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "window_start_timestamp",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_edits",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "events_per_domain",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "53afaede",
+                  "fields": [
+                    {
+                      "name": "wiki",
+                      "expression": "`wiki`"
+                    },
+                    {
+                      "name": "total_edits",
+                      "expression": "`total_edits`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Events by Domain (Top 10)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "wiki",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "total_edits",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 7,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "bot_vs_human",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "115108a4",
+                  "fields": [
+                    {
+                      "name": "total",
+                      "expression": "`total`"
+                    },
+                    {
+                      "name": "is_bot",
+                      "expression": "`is_bot`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Bot vs Human Edits",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "total",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "is_bot",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 6,
+            "width": 5,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
