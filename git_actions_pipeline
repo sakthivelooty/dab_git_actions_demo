@@ -18,12 +18,3 @@ jobs:
       # 2. Set up the official Databricks CLI
       - name: Setup Databricks CLI
         uses: databricks/setup-cli@main
-
-      # 3. Deploy the bundle using environment variables for authentication
-      - name: Deploy Bundle
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: |
-          databricks bundle validate -t dev
-          databricks bundle deploy -t dev
