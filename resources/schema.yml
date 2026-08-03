@@ -1,5 +1,5 @@
 resources:
   schemas:
-    _git_action_dab_demo_bronze_schema_:
-      name: _git_action_dab_demo_bronze_schema_
+    _demo_git_actions_dab_bronze_schema_:
+      name: _demo_git_actions_dab_bronze_schema_
       catalog_name: ${var.catalog} 

@@ -1,5 +1,5 @@
 bundle:
-  name: dab_demo_git_actions
+  name: demo_git_actions_dab
 
 include:
   - resources/*.yml
