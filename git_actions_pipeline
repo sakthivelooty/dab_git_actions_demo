@@ -1,0 +1,29 @@
+name: Deploy Databricks Asset Bundle
+
+on:
+  push:
+    branches:
+      - main  # Change to your default deployment branch
+
+jobs:
+  deploy:
+    name: Validate and Deploy DAB
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout your repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Set up the official Databricks CLI
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # 3. Deploy the bundle using environment variables for authentication
+      - name: Deploy Bundle
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          databricks bundle validate -t dev
+          databricks bundle deploy -t dev
